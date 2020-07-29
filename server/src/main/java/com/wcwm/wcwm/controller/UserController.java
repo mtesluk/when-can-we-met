@@ -21,7 +21,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("${url.users}")
-    public ResponseEntity registerUser(@RequestBody @Valid UserDto user) throws URISyntaxException {
+    public ResponseEntity registerUser(@RequestBody @Valid UserDto user) throws Exception {
         userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(String.format("User %s created", user.getUsername()));
     }

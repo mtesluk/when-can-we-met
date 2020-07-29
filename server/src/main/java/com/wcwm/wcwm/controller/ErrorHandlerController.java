@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.hibernate.exception.ConstraintViolationException;
 
 import java.util.Date;
 
@@ -32,8 +33,16 @@ class ErrorHandlerController {
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    ValidationErrorResponse onMethodArgumentNotValidException(BadCredentialsException e, WebRequest request) {
+    ValidationErrorResponse onBadCredentialsException(BadCredentialsException e, WebRequest request) {
         ValidationErrorResponse error = new ValidationErrorResponse(new Date(), request.getDescription(false), "Wrong credentials");
+        return error;
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    ValidationErrorResponse onWrongTokenAccessException(ConstraintViolationException e, WebRequest request) {
+        ValidationErrorResponse error = new ValidationErrorResponse(new Date(), request.getDescription(false), e.getCause().toString());
         return error;
     }
 }

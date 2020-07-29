@@ -1,7 +1,10 @@
 package com.wcwm.wcwm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name="User")
@@ -18,6 +21,9 @@ public class User {
     @NotBlank
     private String password;
 
+    @OneToMany(mappedBy="user")
+    private List<Meeting> meetings;
+
     public User() {
 
     }
@@ -25,6 +31,10 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public List<Meeting> getMeetings() {
+        return meetings;
     }
 
     public Long getId() {
