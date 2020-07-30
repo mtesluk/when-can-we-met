@@ -18,11 +18,11 @@ public class MeetingController {
 
     @GetMapping("${url.meetings}")
     public List<MeetingDto> getMeetings(@RequestParam(required = false, name = "user") String userId) {
-        return meetingService.getMeetings(userId);
+        return meetingService.getMeetingsDto(userId);
     }
 
     @PostMapping("${url.meetings}")
-    public ResponseEntity saveMeeting(@RequestBody MeetingDto meeting, Authentication authentication) {
+    public ResponseEntity saveMeeting(@RequestBody MeetingDto meeting, Authentication authentication) throws Exception {
         meetingService.createMeetingForUser(meeting, authentication.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Meeting '%s' created", meeting.getName()));
     }

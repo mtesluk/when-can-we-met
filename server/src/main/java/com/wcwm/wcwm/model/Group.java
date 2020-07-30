@@ -1,6 +1,9 @@
 package com.wcwm.wcwm.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,17 +15,19 @@ public class Group {
     @Id
     private Long id;
 
+    @NotBlank(message = "Group name can not be empty")
+    @Column(unique = true)
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @NotEmpty(message = "Group must have at least one connected user")
     private List<User> users = new LinkedList<>();
 
-    public Group() {
-    }
+    @NotNull(message = "Group meetings can not be null")
+    @OneToMany
+    private List<Meeting> meetings = new LinkedList<>();
 
-    public Group(String name) {
-        this.name = name;
-    }
+    public Group() { }
 
     public Long getId() {
         return id;
@@ -46,6 +51,14 @@ public class Group {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public List<Meeting> getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(List<Meeting> meetings) {
+        this.meetings = meetings;
     }
 
     @Override

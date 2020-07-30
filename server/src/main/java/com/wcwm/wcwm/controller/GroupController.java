@@ -24,7 +24,7 @@ public class GroupController {
     }
 
     @GetMapping("${url.groups}" + "/{id}")
-    public ResponseEntity getGroups(@PathVariable(name = "id") Long groupId, Authentication authentication) throws Exception {
+    public ResponseEntity getGroup(@PathVariable(name = "id") Long groupId, Authentication authentication) throws Exception {
         final String username = authentication.getName();
         GroupDto group = groupService.getGroup(groupId);
         return ResponseEntity.status(HttpStatus.CREATED).body(group);

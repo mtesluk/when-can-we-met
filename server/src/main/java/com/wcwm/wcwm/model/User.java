@@ -14,14 +14,14 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Username can not be empty")
     @Column(unique=true)
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "Password can not be empty")
     private String password;
 
     @OneToMany(mappedBy="user")
@@ -30,9 +30,7 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "users")
     private List<Group> groups = new LinkedList<>();
 
-    public User() {
-
-    }
+    public User() { }
 
     public User(String username, String password) {
         this.username = username;
@@ -66,6 +64,12 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public void setMeetings(List<Meeting> meetings) { this.meetings = meetings; }
+
+    public List<Group> getGroups() {return groups; }
+
+    public void setGroups(List<Group> groups) { this.groups = groups; }
 
     @Override
     public String toString() {

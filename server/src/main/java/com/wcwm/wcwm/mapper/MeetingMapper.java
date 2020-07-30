@@ -10,6 +10,9 @@ public class MeetingMapper {
     @Autowired
     static private UserMapper userMapper;
 
+    @Autowired
+    static private GroupMapper groupMapper;
+
     static public MeetingDto mapMeetingEntityToMeetingDto(Meeting meetingEntity) {
         MeetingDto meetingDto = new MeetingDto();
         meetingDto.setName(meetingEntity.getName());

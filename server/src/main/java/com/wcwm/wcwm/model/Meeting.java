@@ -9,17 +9,18 @@ import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
-@Table(name="meeting")
+@Table(name="meetings")
 public class Meeting {
 
     @GeneratedValue
     @Id
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Meeting name can not be empty")
     @Column(unique = true)
     private String name;
 
+    // TODO: Add validation - end must be after start
     private Date startDate;
     private Date endDate;
 
@@ -34,14 +35,6 @@ public class Meeting {
     private Group group;
 
     public Meeting() {}
-
-    public Meeting(@NotBlank String name, Date startDate, Date endDate, User user, Group group) {
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.user = user;
-        this.group = group;
-    }
 
     public String getName() {
         return name;

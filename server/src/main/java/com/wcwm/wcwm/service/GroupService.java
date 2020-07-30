@@ -53,6 +53,13 @@ public class GroupService {
         return groupMapper.mapGroupEntityToGroupDto(group.get());
     }
 
+    public Group getEntityGroup(Long id) throws Exception {
+        Optional<Group> group = groupRepository.findById(id);
+        group.orElseThrow(() -> new Exception("Group not found"));
+
+        return group.get();
+    }
+
     public List<GroupDto> getGroups(String username) {
         List<Group> groups = groupRepository.findByUsersUsername(username);
 

@@ -12,31 +12,22 @@ public class MeetingDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Meeting name can not be empty")
     private String name;
 
     private Date startDate;
     private Date endDate;
 
-    @NotNull
+    @NotNull(message = "Meeting must have user")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UserDto user;
 
-    @NotNull
-    @JsonIgnore
-    private GroupDto group;
+    @NotNull(message = "Meeting must have group")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Long groupId;
 
     public MeetingDto() {
 
-    }
-
-    public MeetingDto(Long id, @NotBlank String name, Date startDate, Date endDate, @NotNull UserDto user, @NotNull GroupDto group) {
-        this.id = id;
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.user = user;
-        this.group = group;
     }
 
     public String getName() {
@@ -76,6 +67,14 @@ public class MeetingDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long group_id) {
+        this.groupId = group_id;
     }
 
     @Override

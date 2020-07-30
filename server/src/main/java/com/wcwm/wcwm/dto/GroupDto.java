@@ -1,12 +1,19 @@
 package com.wcwm.wcwm.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GroupDto {
 
     private Long id;
+
+    @NotBlank(message = "Group name can not be empty")
     private String name;
-    private List<UserDto> users;
+
+    private List<UserDto> users = new LinkedList<>();
 
     public GroupDto() {
     }
