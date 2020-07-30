@@ -1,6 +1,6 @@
 package com.wcwm.wcwm.service;
 
-import com.wcwm.wcwm.model.CustomUserDetails;
+import com.wcwm.wcwm.dto.CustomUserDetails;
 import com.wcwm.wcwm.model.User;
 import com.wcwm.wcwm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

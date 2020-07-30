@@ -1,5 +1,6 @@
 package com.wcwm.wcwm.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
@@ -21,16 +22,21 @@ public class MeetingDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UserDto user;
 
+    @NotNull
+    @JsonIgnore
+    private GroupDto group;
+
     public MeetingDto() {
 
     }
 
-    public MeetingDto(Long id, @NotBlank String name, Date startDate, Date endDate, @NotNull UserDto user) {
+    public MeetingDto(Long id, @NotBlank String name, Date startDate, Date endDate, @NotNull UserDto user, @NotNull GroupDto group) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.user = user;
+        this.group = group;
     }
 
     public String getName() {

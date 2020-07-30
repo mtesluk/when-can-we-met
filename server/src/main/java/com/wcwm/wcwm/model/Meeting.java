@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
+@Table(name="meeting")
 public class Meeting {
 
     @GeneratedValue
@@ -27,13 +28,19 @@ public class Meeting {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name="group_id", nullable=false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Group group;
+
     public Meeting() {}
 
-    public Meeting(@NotBlank String name, Date startDate, Date endDate, User user) {
+    public Meeting(@NotBlank String name, Date startDate, Date endDate, User user, Group group) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.user = user;
+        this.group = group;
     }
 
     public String getName() {
@@ -66,6 +73,14 @@ public class Meeting {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public Long getId() {

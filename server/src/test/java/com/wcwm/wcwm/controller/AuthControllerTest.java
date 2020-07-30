@@ -1,6 +1,6 @@
 package com.wcwm.wcwm.controller;
 
-import com.wcwm.wcwm.model.CustomUserDetails;
+import com.wcwm.wcwm.dto.CustomUserDetails;
 import com.wcwm.wcwm.model.User;
 import com.wcwm.wcwm.service.AuthService;
 import com.wcwm.wcwm.service.CustomUserDetailsService;

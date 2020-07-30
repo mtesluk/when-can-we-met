@@ -1,12 +1,11 @@
 package com.wcwm.wcwm.controller;
 
-import com.wcwm.wcwm.model.AuthenticationRequest;
-import com.wcwm.wcwm.model.AuthenticationResponse;
+import com.wcwm.wcwm.dto.AuthenticationRequest;
+import com.wcwm.wcwm.dto.AuthenticationResponse;
 import com.wcwm.wcwm.service.AuthService;
 import com.wcwm.wcwm.service.CustomUserDetailsService;
 import com.wcwm.wcwm.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;

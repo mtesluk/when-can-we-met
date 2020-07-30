@@ -1,4 +1,4 @@
-package com.wcwm.wcwm.model;
+package com.wcwm.wcwm.dto;
 
 public class AuthenticationRequest {
     private String username;

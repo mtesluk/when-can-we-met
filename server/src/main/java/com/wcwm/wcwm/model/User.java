@@ -1,17 +1,20 @@
 package com.wcwm.wcwm.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-@Table(name="User")
+@Table(name="users")
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -22,7 +25,10 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy="user")
-    private List<Meeting> meetings;
+    private List<Meeting> meetings = new LinkedList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "users")
+    private List<Group> groups = new LinkedList<>();
 
     public User() {
 

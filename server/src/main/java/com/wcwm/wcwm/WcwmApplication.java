@@ -1,7 +1,9 @@
 package com.wcwm.wcwm;
 
+import com.wcwm.wcwm.model.Group;
 import com.wcwm.wcwm.model.Meeting;
 import com.wcwm.wcwm.model.User;
+import com.wcwm.wcwm.repository.GroupRepository;
 import com.wcwm.wcwm.repository.MeetingRepository;
 import com.wcwm.wcwm.repository.UserRepository;
 import org.slf4j.Logger;
@@ -27,19 +29,26 @@ public class WcwmApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(UserRepository repository, MeetingRepository meetingRepository) {
+	public CommandLineRunner demo(UserRepository userRepository, MeetingRepository meetingRepository, GroupRepository groupRepository) {
 		return (args) -> {
-			User userr = repository.save(new User("user", passwordEncoder.encode("passwd")));
-			meetingRepository.save(new Meeting("new", new Date(), new Date(), userr));
-			meetingRepository.save(new Meeting("second", new Date(), new Date(), userr));
+			User newUser = userRepository.save(new User("user", passwordEncoder.encode("passwd")));
+			Group group = new Group("name1");
+			Group newGroup = groupRepository.save(group);
+			newGroup.getUsers().add(newUser);
+			groupRepository.save(newGroup);
+			meetingRepository.save(new Meeting("new", new Date(), new Date(), newUser, newGroup));
+			meetingRepository.save(new Meeting("second", new Date(), new Date(), newUser, newGroup));
 
-			log.info("Users found with findAll():");
+			log.info("Everything findAll():");
 			log.info("-------------------------------");
-			for (User user : repository.findAll()) {
+			for (User user : userRepository.findAll()) {
 				log.info(user.toString());
 			}
 			for (Meeting m : meetingRepository.findAll()) {
 				log.info(m.toString());
+			}
+			for (Group g : groupRepository.findAll()) {
+				log.info(g.toString());
 			}
 			log.info("");
 		};

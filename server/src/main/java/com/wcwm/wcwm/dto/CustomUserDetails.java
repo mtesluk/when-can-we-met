@@ -1,5 +1,6 @@
-package com.wcwm.wcwm.model;
+package com.wcwm.wcwm.dto;
 
+import com.wcwm.wcwm.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

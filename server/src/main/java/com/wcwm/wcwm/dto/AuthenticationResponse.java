@@ -1,4 +1,4 @@
-package com.wcwm.wcwm.model;
+package com.wcwm.wcwm.dto;
 
 public class AuthenticationResponse {
     private final String token;
