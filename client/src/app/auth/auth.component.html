@@ -1,0 +1,7 @@
+<div *ngIf="!(token$ | async); else notAuthenticated">
+    <app-login></app-login>
+</div>
+
+<ng-template #notAuthenticated>
+    <app-logout></app-logout>
+</ng-template>

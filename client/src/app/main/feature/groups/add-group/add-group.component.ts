@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { GroupsService } from '../groups.service';
 
 
 @Component({
@@ -13,7 +13,7 @@ export class AddGroupComponent implements OnInit {
     name: new FormControl('', Validators.required),
   });
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _groupService: GroupsService) { }
 
   ngOnInit(): void {
 
@@ -21,10 +21,9 @@ export class AddGroupComponent implements OnInit {
 
   onSubmit() {
     if (this.groupForm.valid) {
-      console.log(this.groupForm.get('name').value);
-      this._http.post('/api/v1/groups', this.groupForm.value).subscribe(res => {
-        console.log('123');
-      })
+      this._groupService.createGroup(this.groupForm.value).subscribe(() => {
+        // change store state to show groups
+      });
     }
   }
 
