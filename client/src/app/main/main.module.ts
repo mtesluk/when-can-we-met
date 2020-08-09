@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { MainComponent } from './main.component';
 import { CalendarComponent } from './calendar/calendar.component';
@@ -11,6 +12,9 @@ import { GroupListComponent } from './feature/groups/groups-list/group-list.comp
 import { UsersListComponent } from './feature/users/users-list/users-list.component';
 import { UsersComponent } from './feature/users/users.component';
 import { GroupsComponent } from './feature/groups/groups.component';
+
+import { calendarReducer } from './store/reducers/calendar.reducer';
+import { GroupEffects } from './store/effects/group.effect';
 
 
 @NgModule({
@@ -27,9 +31,11 @@ import { GroupsComponent } from './feature/groups/groups.component';
   ],
   imports: [
     SharedModule,
+    StoreModule.forFeature('calendar', calendarReducer),
+    EffectsModule.forFeature([GroupEffects]),
   ],
   exports: [
-    MainComponent
+    MainComponent,
   ],
 })
 export class MainModule { }

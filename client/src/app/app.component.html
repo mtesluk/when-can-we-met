@@ -1,2 +1,4 @@
 <app-navbar></app-navbar>
-<app-main></app-main>
+<div *ngIf="token$ | async">
+    <app-main></app-main>
+</div>
