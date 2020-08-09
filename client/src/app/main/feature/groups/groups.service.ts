@@ -11,4 +11,12 @@ export class GroupsService {
   createGroup(groupData: Group) {
     return this._http.post('/groups', groupData);
   }
+
+  getGroups() {
+    return this._http.get('/groups');
+  }
+
+  getGroup(id: number) {
+    return this._http.get(`/groups/${id}`);
+  }
 }
