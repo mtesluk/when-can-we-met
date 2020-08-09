@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class GroupController {
@@ -20,7 +22,7 @@ public class GroupController {
     public ResponseEntity getGroups(Authentication authentication) {
         final String username = authentication.getName();
         List<GroupDto> groups = groupService.getGroups(username);
-        return ResponseEntity.status(HttpStatus.CREATED).body(groups);
+        return ResponseEntity.status(HttpStatus.OK).body(groups);
     }
 
     @GetMapping("${url.groups}" + "/{id}")
@@ -34,12 +36,18 @@ public class GroupController {
     public ResponseEntity createGroup(@RequestBody GroupDto group, Authentication authentication) {
         final String username = authentication.getName();
         groupService.createGroup(group, username);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Created group: " + group.getName());
+        // TODO: Create some generic message Obj
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", String.format("Group '%s' created", group.getName()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
     }
 
     @PostMapping("${url.groups}" + "/{id}/add_user")
     public ResponseEntity addUserToGroup(@PathVariable(name = "id") String groupId, @RequestBody List<String> newUsers) {
         groupService.addUserToGroup(groupId, newUsers);
-        return ResponseEntity.status(HttpStatus.OK).body("Added users to group: " + newUsers.toString());
+        // TODO: Create some generic message Obj, the same
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", String.format("Group '%s' created", newUsers));
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }
