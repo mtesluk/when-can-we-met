@@ -6,6 +6,7 @@ import com.wcwm.wcwm.model.Group;
 import com.wcwm.wcwm.model.User;
 import com.wcwm.wcwm.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -61,7 +62,7 @@ public class GroupService {
     }
 
     public List<GroupDto> getGroups(String username) {
-        List<Group> groups = groupRepository.findByUsersUsername(username);
+        List<Group> groups = groupRepository.findByUsersUsername(username, Sort.by(Sort.Direction.DESC, "id"));
 
         return groups.stream().map(group -> groupMapper.mapGroupEntityToGroupDto(group)).collect(Collectors.toList());
     }
