@@ -13,11 +13,16 @@ import * as GroupAction from '../../../store/actions/group.action';
 })
 export class GroupListComponent implements OnInit {
   groups$: Observable<Group[]> = this._store.select(state => state.calendar.groups);
+  group$: Observable<Group> = this._store.select(state => state.calendar.group);
 
   constructor(private _store: Store<{calendar: CalendarReducer}>) { }
 
   ngOnInit(): void {
     this._store.dispatch(GroupAction.getGroups());
+  }
+
+  onSelectGroup(group: Group) {
+    this._store.dispatch(GroupAction.setGroup({group}));
   }
 
 }

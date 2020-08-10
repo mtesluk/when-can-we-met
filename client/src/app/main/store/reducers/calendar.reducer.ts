@@ -11,6 +11,7 @@ export const initialState: CalendarReducer = {
 
 const _calendarReducer = createReducer(initialState,
   on(groupActions.setGroups, (state, {groups}) => ({...state, groups: groups})),
+  on(groupActions.setGroup, (state, {group}) => ({...state, group: group})),
 );
 
 export function calendarReducer(state, action) {

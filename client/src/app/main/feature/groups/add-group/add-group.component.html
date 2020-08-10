@@ -1,10 +1,11 @@
 <form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
-    <div class="example-container">
-        <mat-form-field appearance="fill">
-          <mat-label>Enter your group name</mat-label>
-          <input matInput formControlName="name" required />
-          <!-- <mat-error *ngIf="groupForm.get("name").invalid"></mat-error> -->
-        </mat-form-field>
-    </div>
-    <button mat-button type="submit">Save</button>
+  <mat-form-field appearance="fill">
+    <mat-label>Create new group</mat-label>
+    <input matInput formControlName="name" required />
+    <!-- <mat-error *ngIf="groupForm.get("name").invalid"></mat-error> -->
+    <button mat-button matSuffix mat-icon-button aria-label="Submit" type="submit">
+      <mat-icon>done</mat-icon>
+    </button>
+  </mat-form-field>
+  <!-- <button mat-button type="submit">Save</button> -->
 </form>

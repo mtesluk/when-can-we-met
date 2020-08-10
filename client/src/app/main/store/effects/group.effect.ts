@@ -18,6 +18,17 @@ export class GroupEffects {
     )
   );
 
+  // group$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(GroupAction.setGroup),
+  //     // mergeMap(() => this.groupsService.getGroups()),
+  //     map(action => {
+  //       console.log(action)
+  //         return GroupAction.setGroup({group: action.group});
+  //     }),
+  //   )
+  // );
+
   createGroup$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GroupAction.createGroup),

@@ -1,3 +1,10 @@
-p {
-    width: 80%;
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(5, 10rem);
+    gap: .2rem;
+
+    .tale {
+        background-color: goldenrod;
+    }
 }

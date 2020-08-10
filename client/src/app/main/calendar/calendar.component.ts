@@ -12,4 +12,8 @@ export class CalendarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getN() {
+    return Array.from({length: 31}, () => 1);
+  }
+
 }
