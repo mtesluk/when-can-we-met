@@ -17,6 +17,7 @@ export class LogoutComponent implements OnInit {
 
   logout() {
     this._store.dispatch(AuthActions.resetToken());
+    localStorage.removeItem('token');
   }
 
 }

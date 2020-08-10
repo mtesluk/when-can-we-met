@@ -12,6 +12,7 @@ export class AuthEffects {
       ofType(AuthAction.login),
       exhaustMap(action => this.authService.login(action.credentials)),
       map((response: {token: string}) => {
+          localStorage.setItem('token', response.token);
           return AuthAction.setToken(response);
       }),
     )
