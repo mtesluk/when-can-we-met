@@ -47,7 +47,7 @@ public class GroupController {
         groupService.addUserToGroup(groupId, newUsers);
         // TODO: Create some generic message Obj, the same
         Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("message", String.format("Group '%s' created", newUsers));
+        responseBody.put("message", String.format("Group '%s' added: %s", groupId, newUsers.toString()));
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }
