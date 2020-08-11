@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CalendarReducer } from '../../../store/interfaces';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -12,6 +12,8 @@ import * as GroupAction from '../../../store/actions/group.action';
   styleUrls: ['./group-list.component.scss']
 })
 export class GroupListComponent implements OnInit {
+  @Output() changeTabToUsers = new EventEmitter<null>();
+
   groups$: Observable<Group[]> = this._store.select(state => state.calendar.groups);
   group$: Observable<Group> = this._store.select(state => state.calendar.group);
 
@@ -23,6 +25,7 @@ export class GroupListComponent implements OnInit {
 
   onSelectGroup(group: Group) {
     this._store.dispatch(GroupAction.setGroup({group}));
+    this.changeTabToUsers.next();
   }
 
 }

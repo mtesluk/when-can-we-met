@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-groups',
@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./groups.component.scss']
 })
 export class GroupsComponent implements OnInit {
+  @Output() changeTabToUsers = new EventEmitter<null>();
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  changeTabToUsersListen() {
+    this.changeTabToUsers.next();
   }
 
 }

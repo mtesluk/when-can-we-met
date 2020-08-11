@@ -15,6 +15,7 @@ import { GroupsComponent } from './feature/groups/groups.component';
 
 import { calendarReducer } from './store/reducers/calendar.reducer';
 import { GroupEffects } from './store/effects/group.effect';
+import { UserEffects } from './store/effects/user.effects';
 
 
 @NgModule({
@@ -32,7 +33,7 @@ import { GroupEffects } from './store/effects/group.effect';
   imports: [
     SharedModule,
     StoreModule.forFeature('calendar', calendarReducer),
-    EffectsModule.forFeature([GroupEffects]),
+    EffectsModule.forFeature([GroupEffects, UserEffects]),
   ],
   exports: [
     MainComponent,

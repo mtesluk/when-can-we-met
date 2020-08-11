@@ -1,1 +1,6 @@
-<p>users-list works!</p>
+<mat-list class="users-list">
+    <mat-list-item *ngFor="let user of (users$ | async)">
+        <button mat-icon-button (click)="onSelectUser(user)"><mat-icon>input</mat-icon></button>
+        <div mat-line>{{user.username}}</div>
+    </mat-list-item>
+</mat-list>

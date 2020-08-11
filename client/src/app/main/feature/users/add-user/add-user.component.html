@@ -1,1 +1,9 @@
-<p>add-user works!</p>
+<mat-form-field appearance="fill">
+  <mat-label>Add user</mat-label>
+  <mat-select [formControl]="selectedUser" (valueChange)="onSelect($event)">
+    <mat-option>None</mat-option>
+    <mat-option *ngFor="let user of selectionUsers" [value]="user">
+      {{user.username}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

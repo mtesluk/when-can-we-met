@@ -1,1 +1,5 @@
-<span *ngIf="!(group$ | async)">Pls select group</span>
+<span *ngIf="!(group$ | async); else groupSelected">Pls select group</span>
+<ng-template #groupSelected>
+    <app-add-user></app-add-user>
+    <app-users-list></app-users-list>
+</ng-template>

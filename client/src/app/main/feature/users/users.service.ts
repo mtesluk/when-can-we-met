@@ -12,11 +12,16 @@ export class UsersService {
     return this._http.post(environment.url.user, UserData);
   }
 
-  getUsers(groupId: number) {
-    return this._http.get(environment.url.user, {params: {group_id: groupId.toString()}});
+  getUsers(groupId?: number) {
+    const params = groupId ? {group_id: groupId.toString()} : {};
+    return this._http.get(environment.url.user, {params: params});
   }
 
   getUser(id: number) {
     return this._http.get(`${environment.url.user}/${id}`);
+  }
+
+  addUsersToGroup(groupId: number, usernames: string[]) {
+    return this._http.post(environment.url.addUser(groupId), usernames);
   }
 }

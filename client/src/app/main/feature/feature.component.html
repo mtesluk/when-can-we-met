@@ -1,7 +1,7 @@
-<mat-tab-group>
+<mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
     <mat-tab label="Groups">
       <div class="mat-elevation-z4">
-        <app-groups></app-groups>
+        <app-groups (changeTabToUsers)="changeTabToUsersListen()"></app-groups>
       </div>
     </mat-tab>
     <mat-tab label="Users">
