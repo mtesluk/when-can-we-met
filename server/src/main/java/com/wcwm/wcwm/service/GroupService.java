@@ -40,7 +40,6 @@ public class GroupService {
         Group group = optionalGroup.get();
         if (group != null) {
             List<User> users = userService.getUsers(newUsers);
-            System.out.println(users.toString());
             group.getUsers().addAll(users);
             groupRepository.save(group);
         }

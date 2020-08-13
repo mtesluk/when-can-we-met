@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
-    List<Meeting> findByUser(String userId);
+    List<Meeting> findByUserIdAndGroupId(Long userId, Long groupId);
+    List<Meeting> findByGroupId(Long groupId);
 }

@@ -17,7 +17,6 @@ public class Meeting {
     private Long id;
 
     @NotBlank(message = "Meeting name can not be empty")
-    @Column(unique = true)
     private String name;
 
     // TODO: Add validation - end must be after start

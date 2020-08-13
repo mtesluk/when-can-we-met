@@ -17,8 +17,8 @@ public class MeetingController {
     MeetingService meetingService;
 
     @GetMapping("${url.meetings}")
-    public List<MeetingDto> getMeetings(@RequestParam(required = false, name = "user") String userId) {
-        return meetingService.getMeetingsDto(userId);
+    public List<MeetingDto> getMeetings(@RequestParam(required = false, name = "user_id") String userId, @RequestParam(name = "group_id") String groupId) {
+        return meetingService.getMeetingsDto(groupId, userId);
     }
 
     @PostMapping("${url.meetings}")
