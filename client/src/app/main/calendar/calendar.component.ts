@@ -12,7 +12,9 @@ import * as moment from 'moment';
 })
 export class CalendarComponent implements OnInit {
   DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  HOURS = []
+  HOURS = [];
+  COLORS = ['#f5dcc0', '#aeed91', '#a5c4f7', '#60b553', '#f3b6b7'];
+  usersColors = {};
   dates: Date[] = [];
   meetings: Meeting[] = [];
   meetingsArrang = {};
@@ -37,7 +39,8 @@ export class CalendarComponent implements OnInit {
         const minute = Number(time.split(':')[1]);
         day.setHours(hour, minute , 0);
         if (day < endDate && day >= startDate) {
-          return {'background-color': 'red', 'border': 'red 1px solid'};
+          const color = this.usersColors[this.meetings[i].user.username];
+          return {'background-color': color, 'border': `${color} 1px solid`};
         }
       }
     }
@@ -46,7 +49,13 @@ export class CalendarComponent implements OnInit {
   getMeetings() {
     this._store.select(state => state.calendar.meetings).subscribe(meetings => {
       this.meetings = meetings;
-    })
+      const users = meetings.map(meeting => meeting.user.username);
+      const usersUniqe = Array.from(new Set(users));
+      this.usersColors = usersUniqe.reduce((acc, val, index) => {
+        acc[val] = this.COLORS[index];
+        return acc;
+      }, {});
+    });
   }
 
   getWeek() {
