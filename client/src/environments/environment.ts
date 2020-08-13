@@ -8,6 +8,7 @@ export const environment = {
     login: '/login',
     group: '/groups',
     user: '/users',
+    meeting: '/meetings',
     addUser: (id) => `/groups/${id}/add_user`,
   },
 };

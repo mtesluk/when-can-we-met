@@ -1,6 +1,10 @@
 
 <div class="calendar">
-    <div *ngFor="let a of getN()" class="tale">
-        {{a}}
+    <div *ngFor="let day of getWeek()" class="tale">
+        <div class="day">{{DAYS[day.getDay()]}}</div>
+        <div class="date">{{day | date}}</div>
+        <div class="hours">
+            <div *ngFor="let hour of HOURS" class="hour" [ngClass]="{'mark': this.type === this.ADDING}" [ngStyle]="getColors(hour, day)">{{hour}}</div>
+        </div>
     </div>
 </div>

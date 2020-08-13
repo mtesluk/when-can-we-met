@@ -3,10 +3,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material.module';
 import { CommonModule } from '@angular/common';
+import { ChosenElementDirective } from './directives/chosen-element.directive';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [ChosenElementDirective],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -18,6 +19,7 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     HttpClientModule,
     CommonModule,
+    ChosenElementDirective,
   ]
 })
 export class SharedModule { }

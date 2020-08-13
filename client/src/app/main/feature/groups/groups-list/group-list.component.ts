@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Group } from '../../../../shared/interfaces/group.interface';
 import * as GroupAction from '../../../store/actions/group.action';
+import * as MeetingAction from '../../../store/actions/meeting.action';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class GroupListComponent implements OnInit {
   @Output() changeTabToUsers = new EventEmitter<null>();
 
   groups$: Observable<Group[]> = this._store.select(state => state.calendar.groups);
-  group$: Observable<Group> = this._store.select(state => state.calendar.group);
+  selectedGroupId: number;
 
   constructor(private _store: Store<{calendar: CalendarReducer}>) { }
 
@@ -24,7 +25,9 @@ export class GroupListComponent implements OnInit {
   }
 
   onSelectGroup(group: Group) {
+    this.selectedGroupId = group.id;
     this._store.dispatch(GroupAction.setGroup({group}));
+    this._store.dispatch(MeetingAction.getMeetings({groupId: group.id}));
     this.changeTabToUsers.next();
   }
 

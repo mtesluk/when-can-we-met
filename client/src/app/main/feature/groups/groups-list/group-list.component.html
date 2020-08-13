@@ -1,5 +1,5 @@
 <mat-list class="groups-list">
-    <mat-list-item *ngFor="let group of (groups$ | async)">
+    <mat-list-item *ngFor="let group of (groups$ | async)" [chosenElement]="group.id === selectedGroupId">
         <button mat-icon-button (click)="onSelectGroup(group)"><mat-icon>input</mat-icon></button>
         <div mat-line>{{group.name}}</div>
     </mat-list-item>

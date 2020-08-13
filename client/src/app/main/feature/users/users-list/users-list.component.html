@@ -1,5 +1,5 @@
 <mat-list class="users-list">
-    <mat-list-item *ngFor="let user of (users$ | async)">
+    <mat-list-item *ngFor="let user of (users$ | async)" [chosenElement]="user.id === selectedUserId">
         <button mat-icon-button (click)="onSelectUser(user)"><mat-icon>input</mat-icon></button>
         <div mat-line>{{user.username}}</div>
     </mat-list-item>
