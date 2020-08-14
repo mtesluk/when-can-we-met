@@ -20,7 +20,7 @@ export class CalendarComponent implements OnInit {
   meetingsArrang = {};
   SHOWING = 0;
   ADDING = 1;
-  type = this.SHOWING;
+  mode = this.SHOWING;
 
   constructor(private _store: Store<{calendar: CalendarReducer}>) { }
 
@@ -31,7 +31,7 @@ export class CalendarComponent implements OnInit {
   }
 
   getColors(time: string, day: Date) {
-    if (this.type === this.SHOWING) {
+    if (this.mode === this.SHOWING) {
       for (let i = 0; i < this.meetings.length; i++) {
         const startDate = new Date(this.meetings[i].startDate);
         const endDate = new Date(this.meetings[i].endDate);
@@ -41,6 +41,22 @@ export class CalendarComponent implements OnInit {
         if (day < endDate && day >= startDate) {
           const color = this.usersColors[this.meetings[i].user.username];
           return {'background-color': color, 'border': `${color} 1px solid`};
+        }
+      }
+    }
+  }
+
+  getTooltip(time: string, day: Date) {
+    if (this.mode === this.SHOWING) {
+      for (let i = 0; i < this.meetings.length; i++) {
+        const startDate = new Date(this.meetings[i].startDate);
+        const endDate = new Date(this.meetings[i].endDate);
+        const hour = Number(time.split(':')[0]);
+        const minute = Number(time.split(':')[1]);
+        day.setHours(hour, minute , 0);
+        if (day < endDate && day >= startDate) {
+          const color = this.usersColors[this.meetings[i].user.username];
+          return `${this.meetings[i].name} ${this.meetings[i].user.username}` ;
         }
       }
     }

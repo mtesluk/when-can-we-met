@@ -11,3 +11,11 @@ body, html {
 * {
     box-sizing: border-box;
 }
+
+.mat-tooltip.tooltip {
+    font-size: 1.5rem;
+}
+
+.mat-button-toggle-label-content {
+    line-height: 1rem !important;
+}
