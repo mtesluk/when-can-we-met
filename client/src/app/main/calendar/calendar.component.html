@@ -19,6 +19,8 @@
                     [matTooltip]="getTooltip(hour, day)"
                     matTooltipClass="tooltip"
                     matTooltipPosition="after"
+                    (click)="selectHour(day, hour)"
+                    (mouseover)="hoverHour(day, hour)"
                 >
                     {{hour}}
                 </div>

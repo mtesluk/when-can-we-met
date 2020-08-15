@@ -6,6 +6,10 @@ export interface Meeting {
     name: string;
     startDate: Date;
     endDate: Date;
-    user: User;
+    user?: User;
     groups?: Group[];
+}
+
+export interface RequestMeeting extends Meeting {
+    groupId: number;
 }

@@ -17,6 +17,16 @@ export class MeetingEffects {
     )
   );
 
+  // createMeeting$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(MeetingAction.createMeeting),
+  //     exhaustMap(action => this.meetingService.createMeeting(action.meeting)),
+  //     map(response => {
+  //         return MeetingAction.getMeetings();
+  //     }),
+  //   )
+  // );
+
   constructor(
     private actions$: Actions,
     private meetingService: MeetingService,
