@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Creating meeting</h2>
+<div mat-dialog-content>
+  <p>Start: {{data.startDate | date:'medium'}}</p>
+  <p>End: {{data.endDate | date:'medium'}}</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput #name required>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="name.value" cdkFocusInitial>Create</button>
+</div>

@@ -11,6 +11,8 @@ import { CalendarMode } from '../../shared/interfaces/calendar.interface';
 import { CalendarReducer } from '../store/interfaces';
 import { User } from '../../shared/interfaces/user.interface';
 import { NotificationService } from '../../shared/directives/notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddingMeetingDialog } from './adding-meeting-dialog';
 
 @Component({
   selector: 'app-calendar',
@@ -35,6 +37,7 @@ export class CalendarComponent implements OnInit {
               private _meetingService: MeetingService,
               private _service: CalendarService,
               private notificationService: NotificationService,
+              public dialog: MatDialog,
             ) { }
 
   ngOnInit(): void {
@@ -45,8 +48,8 @@ export class CalendarComponent implements OnInit {
   }
 
   onSelectTime(day: Date, time: string) {
-    if (this.isAddingMode()) { // If selected date do not exists it means user choose start date
-      if (!this.selectedDate && !this.selectedTime) {
+    if (this.isAddingMode()) {
+      if (!this.selectedDate && !this.selectedTime) { // If selected date do not exists it means user choose start date
         this.selectedDate = new Date(day);
         this.selectedTime = time;
       } else { // If selected date exists it means user choose end date
@@ -139,11 +142,18 @@ export class CalendarComponent implements OnInit {
       endDate.setHours(endHour);
       endDate.setMinutes(endMinute);
 
-      this._meetingService.createMeeting({name: 'Meeting', startDate, endDate, groupId}).subscribe(res => {
-        this.notificationService.notify$.next('Meeting created');
-        this._store.dispatch(MeetingActions.getMeetings({groupId}));
-        this.setShowingMode();
+      const dialogRef = this.dialog.open(AddingMeetingDialog, {
+        data: {startDate, endDate}
       });
+  
+      dialogRef.afterClosed().subscribe(meetingName => {
+        this._meetingService.createMeeting({name: meetingName, startDate, endDate, groupId}).subscribe(res => {
+          this.notificationService.notify$.next('Meeting created');
+          this._store.dispatch(MeetingActions.getMeetings({groupId}));
+          this.setShowingMode();
+        });
+      });
+
     } else {
       this.notificationService.notify$.next('No group selected');
     }
