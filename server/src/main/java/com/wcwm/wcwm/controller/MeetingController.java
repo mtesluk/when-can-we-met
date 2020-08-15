@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class MeetingController {
@@ -24,6 +26,8 @@ public class MeetingController {
     @PostMapping("${url.meetings}")
     public ResponseEntity saveMeeting(@RequestBody MeetingDto meeting, Authentication authentication) throws Exception {
         meetingService.createMeetingForUser(meeting, authentication.getName());
-        return ResponseEntity.status(HttpStatus.CREATED).body(String.format("Meeting '%s' created", meeting.getName()));
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", String.format("Meeting '%s' created", meeting.getName()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
     }
 }
