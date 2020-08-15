@@ -5,6 +5,7 @@ import { AuthService } from './auth/auth.service';
 import { GroupsService } from './main/feature/groups/groups.service';
 import { UsersService } from './main/feature/users/users.service';
 import { MeetingService } from './main/calendar/meeting.service';
+import { AuthErrorInterceptor } from './auth/auth-error.interceptor';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { MeetingService } from './main/calendar/meeting.service';
     UsersService,
     MeetingService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthErrorInterceptor, multi: true },
   ]
 })
 export class CoreModule { }
