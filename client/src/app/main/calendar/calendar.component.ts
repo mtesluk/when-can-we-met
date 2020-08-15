@@ -10,6 +10,7 @@ import { CalendarService } from './calendar.service';
 import { CalendarMode } from '../../shared/interfaces/calendar.interface';
 import { CalendarReducer } from '../store/interfaces';
 import { User } from '../../shared/interfaces/user.interface';
+import { NotificationService } from '../../shared/directives/notification.service';
 
 @Component({
   selector: 'app-calendar',
@@ -32,7 +33,8 @@ export class CalendarComponent implements OnInit {
 
   constructor(private _store: Store<{calendar: CalendarReducer}>,
               private _meetingService: MeetingService,
-              private _service: CalendarService
+              private _service: CalendarService,
+              private notificationService: NotificationService,
             ) { }
 
   ngOnInit(): void {
@@ -54,9 +56,9 @@ export class CalendarComponent implements OnInit {
         const endTime = time;
 
         if (startDate.getDate() !== endDate.getDate()) {
-          console.log('[INFO] YOU MUST PICK THE SAME DAY')
+          this.notificationService.notify$.next('Only one day meeting are allowed');
         } else if (this._service.isTimeGraterThanTime(startTime, endTime)) {
-          console.log('[INFO] YOU MUST PICK END TIME AFTER STARTING TIME')
+          this.notificationService.notify$.next('Starting time must be before ending time');
         } else {
           this._saveMeeting(startDate, startTime, endDate, endTime, this.groupId);
         }
@@ -138,11 +140,12 @@ export class CalendarComponent implements OnInit {
       endDate.setMinutes(endMinute);
 
       this._meetingService.createMeeting({name: 'Meeting', startDate, endDate, groupId}).subscribe(res => {
+        this.notificationService.notify$.next('Meeting created');
         this._store.dispatch(MeetingActions.getMeetings({groupId}));
         this.setShowingMode();
       });
     } else {
-      console.log('[INFO] NO GROUP SELECTED');
+      this.notificationService.notify$.next('No group selected');
     }
   }
 
@@ -165,7 +168,6 @@ export class CalendarComponent implements OnInit {
     }
     const color = this.usersColors[meeting.user.username];
     const timesOfMeeting = this._service.generateTimes(`${startDate.getHours()}:${startDate.getMinutes()}`, `${endDate.getHours()}:${endDate.getMinutes()}`);
-    console.log(timesOfMeeting)
     timesOfMeeting.forEach(time => {
       this.meetings[startDate.getDate()][time] = {
         color: color,

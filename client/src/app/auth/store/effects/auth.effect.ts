@@ -3,6 +3,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { map, exhaustMap } from 'rxjs/operators';
 import * as AuthAction from '../actions/auth.action';
 import { AuthService } from '../../auth.service';
+import { NotificationService } from '../../../shared/directives/notification.service';
 
 
 @Injectable()
@@ -13,6 +14,7 @@ export class AuthEffects {
       exhaustMap(action => this.authService.login(action.credentials)),
       map((response: {token: string}) => {
           localStorage.setItem('token', response.token);
+          this.notificationService.notify$.next('Sign in succesfull');
           return AuthAction.setToken(response);
       }),
     )
@@ -20,6 +22,7 @@ export class AuthEffects {
 
   constructor(
     private actions$: Actions,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService,
   ) {}
 }

@@ -17,6 +17,11 @@ export const environment = {
     lightBlue: '#a5c4f7',
     lightRed: '#f3b6b7',
     green: '#60b553',
+  },
+  notify: {
+    horizontal: 'end',
+    vertical: 'right',
+    class: 'notification-popup',
   }
 };
 

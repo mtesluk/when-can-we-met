@@ -6,6 +6,7 @@ import { UsersService } from '../users.service';
 import * as UserAction from '../../../store/actions/user.actions';
 import { Group } from '../../../../shared/interfaces/group.interface';
 import { FormControl } from '@angular/forms';
+import { NotificationService } from '../../../../shared/directives/notification.service';
 
 @Component({
   selector: 'app-add-user',
@@ -19,6 +20,7 @@ export class AddUserComponent implements OnInit {
 
   constructor(private _store: Store<{calendar: CalendarReducer}>,
               private _service: UsersService,
+              private notificationService: NotificationService,
             ) { }
 
   ngOnInit(): void {
@@ -38,6 +40,7 @@ export class AddUserComponent implements OnInit {
       this._service.addUsersToGroup(this.selectedGroup.id, [user.username]).subscribe(() => {
         this._store.dispatch(UserAction.getUsers({groupId: this.selectedGroup.id}));
         this.selectedUser.setValue(null);
+        this.notificationService.notify$.next('Group added');
       })
     }
   }

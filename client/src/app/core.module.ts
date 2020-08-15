@@ -7,6 +7,7 @@ import { UsersService } from './main/feature/users/users.service';
 import { MeetingService } from './main/calendar/meeting.service';
 import { AuthErrorInterceptor } from './auth/auth-error.interceptor';
 import { CalendarService } from './main/calendar/calendar.service';
+import { NotificationService } from './shared/directives/notification.service';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { CalendarService } from './main/calendar/calendar.service';
     UsersService,
     MeetingService,
     CalendarService,
+    NotificationService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthErrorInterceptor, multi: true },
   ]

@@ -4,6 +4,7 @@ import { map, mergeMap, exhaustMap } from 'rxjs/operators';
 import * as GroupAction from '../actions/group.action';
 import { GroupsService } from '../../feature/groups/groups.service';
 import { Group } from '../../../shared/interfaces/group.interface';
+import { NotificationService } from '../../../shared/directives/notification.service';
 
 
 @Injectable()
@@ -34,13 +35,15 @@ export class GroupEffects {
       ofType(GroupAction.createGroup),
       exhaustMap(action => this.groupsService.createGroup(action.group)),
       map(response => {
-          return GroupAction.getGroups();
+        this.notificationService.notify$.next('Group added');
+        return GroupAction.getGroups();
       }),
     )
   );
 
   constructor(
     private actions$: Actions,
-    private groupsService: GroupsService
+    private groupsService: GroupsService,
+    private notificationService: NotificationService,
   ) {}
 }
