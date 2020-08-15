@@ -11,6 +11,13 @@ export const environment = {
     meeting: '/meetings',
     addUser: (id) => `/groups/${id}/add_user`,
   },
+  colors: {
+    lightOrange: '#f5dcc0',
+    lightGreen: '#aeed91',
+    lightBlue: '#a5c4f7',
+    lightRed: '#f3b6b7',
+    green: '#60b553',
+  }
 };
 
 /*

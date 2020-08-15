@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { CalendarReducer } from '../store/interfaces';
-import { map } from 'rxjs/operators';
-import { Meeting } from '../../shared/interfaces/meeting.interface';
 import * as moment from 'moment';
-import { MeetingService } from './meeting.service';
+
 import * as MeetingActions from '../store/actions/meeting.action';
+import { Meeting } from '../../shared/interfaces/meeting.interface';
+import { MeetingService } from './meeting.service';
+import { environment } from '../../../environments/environment';
+import { CalendarService } from './calendar.service';
+import { CalendarMode } from '../../shared/interfaces/calendar.interface';
+import { CalendarReducer } from '../store/interfaces';
+import { User } from '../../shared/interfaces/user.interface';
 
 @Component({
   selector: 'app-calendar',
@@ -14,103 +18,67 @@ import * as MeetingActions from '../store/actions/meeting.action';
 })
 export class CalendarComponent implements OnInit {
   DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  HOURS = [];
-  COLORS = ['#f5dcc0', '#aeed91', '#a5c4f7', '#60b553', '#f3b6b7'];
+  COLORS = [environment.colors.lightOrange, environment.colors.lightBlue, environment.colors.lightGreen, environment.colors.green, environment.colors.lightRed];
+  TIMES = [];
+  week: Date[] = [];
   usersColors = {};
-  dates: Date[] = [];
-  meetings: Meeting[] = [];
-  newMeetings = {};
-  meetingsArrang = {};
-  SHOWING = 0;
-  ADDING = 1;
-  mode = this.SHOWING;
-  selectedDay: Date;
-  selectedHour: string;
+  meetings: {[day: number]: {[time: string]: {color: string, text: string}}} = {};
+  groupId: number;
+  selectedDate: Date;
+  selectedTime: string;
   hovereddDay: Date;
   hoveredHour: string;
-  groupId: number;
+  mode = CalendarMode.SHOWING;
 
   constructor(private _store: Store<{calendar: CalendarReducer}>,
-              private _service: MeetingService) { }
+              private _meetingService: MeetingService,
+              private _service: CalendarService
+            ) { }
 
   ngOnInit(): void {
-    this.getHours();
-    this.getMeetings();
-    this.setWeek();
-    this.getGroup();
+    this._generateTimes();
+    this._generateWeek();
+    this._getMeetings();
+    this._getCurrentGroup();
   }
 
-  getGroup() {
-    this._store.select(store => store.calendar.group).subscribe(group => {
-      if (group) {
-        this.groupId = group.id;
-      }
-    });
-  }
+  onSelectTime(day: Date, time: string) {
+    if (this.isAddingMode()) { // If selected date do not exists it means user choose start date
+      if (!this.selectedDate && !this.selectedTime) {
+        this.selectedDate = new Date(day);
+        this.selectedTime = time;
+      } else { // If selected date exists it means user choose end date
+        const startDate = new Date(this.selectedDate);
+        const startTime = this.selectedTime;
+        const endDate = new Date(day);
+        const endTime = time;
 
-  hoverHour(day: Date, time: string) {
-    if (this.mode === this.ADDING) {
-      this.hovereddDay = day;
-      this.hoveredHour = time;
-    }
-  }
-
-  selectHour(day: Date, time: string) {
-    if (this.mode === this.ADDING) {
-      if (!this.selectedDay && !this.selectedHour) {
-        this.selectedDay = new Date(day);
-        this.selectedHour = time;
-      } else {
-        if (this.selectedDay.getDate() !== day.getDate()) {
+        if (startDate.getDate() !== endDate.getDate()) {
           console.log('[INFO] YOU MUST PICK THE SAME DAY')
-        } else if (
-          Number(this.selectedHour.split(':')[0]) >= Number(time.split(':')[0])
-          || (Number(time.split(':')[0]) == Number(this.selectedHour.split(':')[0]) && Number(this.selectedHour.split(':')[1]) >= Number(time.split(':')[1]))
-        ) {
+        } else if (this._service.isTimeGraterThanTime(startTime, endTime)) {
           console.log('[INFO] YOU MUST PICK END TIME AFTER STARTING TIME')
         } else {
-          this.saveMeeting(day, time);
+          this._saveMeeting(startDate, startTime, endDate, endTime, this.groupId);
         }
-        this.selectedDay = null;
-        this.selectedHour = null;
+        this.selectedDate = null;
+        this.selectedTime = null;
       }
     }
   }
 
-  saveMeeting(day: Date, time: string) {
-    this.selectedDay.setHours(Number(this.selectedHour.split(':')[0]));
-    this.selectedDay.setMinutes(Number(this.selectedHour.split(':')[1]));
-    day.setHours(Number(time.split(':')[0]));
-    day.setMinutes(Number(time.split(':')[1]));
-    if (this.groupId) {
-      this._service.createMeeting({name: 'Meeting', startDate: this.selectedDay, endDate:day, groupId: this.groupId}).subscribe(res => {
-        this._store.dispatch(MeetingActions.getMeetings({groupId: this.groupId}));
-      });
-    } else {
-      console.log('[INFO] NO GROUP SELECTED');
-    }
-  }
-
-  getColors(time: string, day: Date) {
-    if (this.mode === this.SHOWING) {
-      for (let i = 0; i < this.meetings.length; i++) {
-        const startDate = new Date(this.meetings[i].startDate);
-        const endDate = new Date(this.meetings[i].endDate);
-        const hour = Number(time.split(':')[0]);
-        const minute = Number(time.split(':')[1]);
-        day.setHours(hour, minute , 0);
-        if (day < endDate && day >= startDate) {
-          const color = this.usersColors[this.meetings[i].user.username];
-          return {'background-color': color, 'border': `${color} 1px solid`};
-        }
+  getColor(time: string, day: Date) {
+    if (this.isShowingMode()) {
+      if (this.meetings.hasOwnProperty(day.getDate()) && this.meetings[day.getDate()].hasOwnProperty(time)) {
+        const color = this.meetings[day.getDate()][time].color;
+        return {'background-color': color, 'border': `${color} 1px solid`};
       }
     } else {
       const color = this.COLORS[1];
-      if (this.selectedHour && this.selectedDay && time === this.selectedHour && day.getDate() === this.selectedDay.getDate()) {
+      if (this.selectedTime && this.selectedDate && time === this.selectedTime && day.getDate() === this.selectedDate.getDate()) {
         return {'background-color': color, 'border': `${color} 1px solid`};
       } else if (
-        this.selectedHour && this.selectedDay && this.hoveredHour && day.getDate() === this.selectedDay.getDate() && day.getDate() === this.hovereddDay.getDate() && (
-          this.isHourGraterThan(this.hoveredHour, time) && this.isHourGraterThan(time, this.selectedHour)
+        this.selectedTime && this.selectedDate && this.hoveredHour && day.getDate() === this.selectedDate.getDate() && day.getDate() === this.hovereddDay.getDate() && (
+          this._service.isTimeGraterThanTime(this.hoveredHour, time) && this._service.isTimeGraterThanTime(time, this.selectedTime)
         )
       ) {
         return {'background-color': color, 'border': `${color} 1px solid`};
@@ -118,73 +86,124 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  isHourGraterThan(hour: string, than: string) {
-    return Number(hour.split(':')[0]) > Number(than.split(':')[0])
-            || (
-              Number(hour.split(':')[0]) === Number(than.split(':')[0])
-              && Number(hour.split(':')[1]) >= Number(than.split(':')[1]
-            )
-          );
-  }
-
   getTooltip(time: string, day: Date) {
-    if (this.mode === this.SHOWING) {
-      for (let i = 0; i < this.meetings.length; i++) {
-        const startDate = new Date(this.meetings[i].startDate);
-        const endDate = new Date(this.meetings[i].endDate);
-        const hour = Number(time.split(':')[0]);
-        const minute = Number(time.split(':')[1]);
-        day.setHours(hour, minute , 0);
-        if (day < endDate && day >= startDate) {
-          const color = this.usersColors[this.meetings[i].user.username];
-          return `${this.meetings[i].name} ${this.meetings[i].user.username}` ;
-        }
+    if (this.isShowingMode()) {
+      if (this.meetings.hasOwnProperty(day.getDate()) && this.meetings[day.getDate()].hasOwnProperty(time)) {
+        return this.meetings[day.getDate()][time].text;
       }
     }
   }
 
-  getMeetings() {
-    this._store.select(state => state.calendar.meetings).subscribe(meetings => {
-      this.meetings = meetings;
-      // meetings.forEach(meeting => {
-      //   const startDate = new Date(meeting.startDate);
-      //   const endDate = new Date(meeting.endDate);
-      //   console.log(startDate.getDate())
-      //   if (this.newMeetings.hasOwnProperty(startDate.getDate())) {
+  onHoverTime(date: Date, time: string) {
+    if (this.isAddingMode()) {
+      this.hovereddDay = date;
+      this.hoveredHour = time;
+    }
+  }
 
-      //   }
-      // })
-      const users = meetings.map(meeting => meeting.user.username);
-      const usersUniqe = Array.from(new Set(users));
+  getCalendarModeType(type: string) {
+    switch (type) {
+      case 'ADDING': return CalendarMode.ADDING;
+      case 'SHOWING': return CalendarMode.SHOWING;
+      default: return CalendarMode.SHOWING;
+    }
+  }
+
+  isAddingMode() {
+    return this.mode === CalendarMode.ADDING;
+  }
+
+  isShowingMode() {
+    return this.mode === CalendarMode.SHOWING;
+  }
+
+  setShowingMode() {
+    this.mode = CalendarMode.SHOWING;
+  }
+
+  private _saveMeeting(startDay: Date, startTime: string, endDay: Date, endTime: String, groupId: number) {
+    if (groupId) {
+      const startDate = new Date(startDay);
+      const splittedStartHour = startTime.split(':').map(part => Number(part));
+      const startHour = splittedStartHour[0];
+      const startMinute = splittedStartHour[1];
+      startDate.setHours(startHour);
+      startDate.setMinutes(startMinute);
+
+      const splittedEndHour = endTime.split(':').map(part => Number(part));
+      const endDate = new Date(endDay);
+      const endHour = splittedEndHour[0];
+      const endMinute = splittedEndHour[1];
+      endDate.setHours(endHour);
+      endDate.setMinutes(endMinute);
+
+      this._meetingService.createMeeting({name: 'Meeting', startDate, endDate, groupId}).subscribe(res => {
+        this._store.dispatch(MeetingActions.getMeetings({groupId}));
+        this.setShowingMode();
+      });
+    } else {
+      console.log('[INFO] NO GROUP SELECTED');
+    }
+  }
+
+  private _getMeetings() {
+    this._store.select(state => state.calendar.meetings).subscribe(meetings => {
+      this.meetings = {};
+      meetings.forEach(meeting => {
+        const users = meetings.map(meeting => meeting.user.username);
+        this._generateColorsForUsers(users);
+        this._generateDetailsOfFrame(meeting);
+      });
+    });
+  }
+
+  private _generateDetailsOfFrame(meeting) {
+    const startDate = new Date(meeting.startDate);
+    const endDate = new Date(meeting.endDate);
+    if (!this.meetings.hasOwnProperty(startDate.getDate())) {
+      this.meetings[startDate.getDate()] = {};
+    }
+    const color = this.usersColors[meeting.user.username];
+    const timesOfMeeting = this._service.generateTimes(`${startDate.getHours()}:${startDate.getMinutes()}`, `${endDate.getHours()}:${endDate.getMinutes()}`);
+    console.log(timesOfMeeting)
+    timesOfMeeting.forEach(time => {
+      this.meetings[startDate.getDate()][time] = {
+        color: color,
+        text: `${meeting.name} ${meeting.user.username}`,
+      }
+    });
+  }
+
+  private _generateColorsForUsers(users: string[]) {
+    const usersUniqe = Array.from(new Set(users));
       this.usersColors = usersUniqe.reduce((acc, val, index) => {
         acc[val] = this.COLORS[index];
         return acc;
       }, {});
+  }
+
+  private _getCurrentGroup() {
+    this._store.select(store => store.calendar.group).subscribe(group => {
+      if (group) {
+        this.groupId = group.id;
+      }
     });
   }
 
-  getWeek() {
-    return this.dates;
-  }
-
-  setWeek() {
-    const firstDayOfWeek = moment().startOf('week').toDate();
+  /*
+    @param: nextWeek - tell which next weekend show, 0 means this week
+  */
+ private _generateWeek(nextWeek: number = 0) {
+    const firstDayOfWeek = moment().add(nextWeek,'d').startOf('week').toDate();
     for (let i = 0; i < 7; i++) {
       const nextDay = new Date(firstDayOfWeek);
       nextDay.setDate(firstDayOfWeek.getDate() + i)
-      this.dates.push(nextDay)
+      this.week.push(nextDay)
     }
   }
 
-  getHours() {
-    const hours = Array.from({
-      length: 48
-    }, (_, hour) => moment({
-        hour: Math.floor(hour / 2),
-        minutes: (hour % 2 === 0 ? 0 : 30)
-      }).format('HH:mm')
-    );
-    this.HOURS = hours.slice(18, 47);
+  private _generateTimes() {
+    this.TIMES = this._service.generateTimes('9:00','23:00');
   }
 
 }

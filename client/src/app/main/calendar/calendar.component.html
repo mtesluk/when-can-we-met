@@ -2,27 +2,27 @@
 <div class="calendar">
     <div class="calendar__addToggle">
         <mat-button-toggle-group name="fontStyle" aria-label="Font Style" [(value)]="mode">
-            <mat-button-toggle [value]="SHOWING">Show meetings</mat-button-toggle>
-            <mat-button-toggle [value]="ADDING">Arrange new meeting</mat-button-toggle>
+            <mat-button-toggle [value]="getCalendarModeType('SHOWING')">Show meetings</mat-button-toggle>
+            <mat-button-toggle [value]="getCalendarModeType('ADDING')">Arrange new meeting</mat-button-toggle>
         </mat-button-toggle-group>
     </div>
     <div class="calendar__week">
-        <div *ngFor="let day of getWeek()" class="tale">
+        <div *ngFor="let day of week" class="tale">
             <div class="day">{{DAYS[day.getDay()]}}</div>
             <div class="date">{{day | date}}</div>
             <div class="hours">
                 <div
-                    *ngFor="let hour of HOURS"
+                    *ngFor="let time of TIMES"
                     class="hour"
-                    [ngClass]="{'mark': mode === ADDING}"
-                    [ngStyle]="getColors(hour, day)"
-                    [matTooltip]="getTooltip(hour, day)"
+                    [ngClass]="{'mark': isAddingMode()}"
+                    [ngStyle]="getColor(time, day)"
+                    [matTooltip]="getTooltip(time, day)"
                     matTooltipClass="tooltip"
                     matTooltipPosition="after"
-                    (click)="selectHour(day, hour)"
-                    (mouseover)="hoverHour(day, hour)"
+                    (click)="onSelectTime(day, time)"
+                    (mouseover)="onHoverTime(day, time)"
                 >
-                    {{hour}}
+                    {{time}}
                 </div>
             </div>
         </div>
