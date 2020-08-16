@@ -21,7 +21,6 @@ export const environment = {
   notify: {
     horizontal: 'end',
     vertical: 'right',
-    class: 'notification-popup',
   }
 };
 
