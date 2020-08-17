@@ -9,5 +9,6 @@
           <input matInput type="password" formControlName="password" required />
         </mat-form-field>
     </div>
-    <button mat-icon-button type="submit"><mat-icon>login</mat-icon></button>
+    <button mat-icon-button type="submit" [matTooltip]="'Login'" matTooltipClass="tooltip"><mat-icon>login</mat-icon></button>
+    <button mat-icon-button type="button" [matTooltip]="'Register'" matTooltipClass="tooltip" (click)="onRegisterClick()"><mat-icon>assignment</mat-icon></button>
 </form>

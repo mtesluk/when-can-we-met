@@ -12,4 +12,8 @@ export class AuthService {
   login(credentials: Credentials) {
     return this._http.post(environment.url.login, credentials);
   }
+
+  register(user: Credentials) {
+    return this._http.post(environment.url.user, user);
+  }
 }

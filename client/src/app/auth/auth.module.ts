@@ -9,12 +9,17 @@ import { LogoutComponent } from './logout/logout.component';
 import { AuthComponent } from './auth.component';
 
 import { AuthEffects } from './store/effects/auth.effect';
+import { RegisterDialog } from './login/register-dialog/register-dialog';
 
 @NgModule({
   declarations: [
     LoginComponent,
     LogoutComponent,
     AuthComponent,
+    RegisterDialog,
+  ],
+  entryComponents: [
+    RegisterDialog
   ],
   imports: [
     SharedModule,
