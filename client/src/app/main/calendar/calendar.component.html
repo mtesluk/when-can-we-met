@@ -7,9 +7,9 @@
         </mat-button-toggle-group>
     </div>
     <div class="calendar__changeWeeks">
-        <mat-icon class="calendar__arrow" *ngIf="countWeek > 0" (click)="previousWeek()">arrow_back_ios</mat-icon>
+        <span *ngIf="countWeek > 0" (click)="previousWeek()" class="calendar__arrow"><mat-icon class="calendar__arrow--icon">arrow_back_ios</mat-icon>Prevoius week</span>
         <span class="spacer"></span>
-        <mat-icon class="calendar__arrow" (click)="nextWeek()">arrow_forward_ios</mat-icon>
+        <span (click)="nextWeek()" class="calendar__arrow">Next week<mat-icon class="calendar__arrow--icon">arrow_forward_ios</mat-icon></span>
     </div>
     <div class="calendar__week">
         <div *ngFor="let day of week" class="tale">
