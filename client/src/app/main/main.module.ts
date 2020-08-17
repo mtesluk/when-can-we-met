@@ -17,7 +17,7 @@ import { calendarReducer } from './store/reducers/calendar.reducer';
 import { GroupEffects } from './store/effects/group.effect';
 import { UserEffects } from './store/effects/user.effects';
 import { MeetingEffects } from './store/effects/meeting.effect';
-import { AddingMeetingDialog } from './calendar/adding-meeting-dialog';
+import { AddingMeetingDialog } from './calendar/adding-meeting-dialog/adding-meeting-dialog';
 
 
 @NgModule({

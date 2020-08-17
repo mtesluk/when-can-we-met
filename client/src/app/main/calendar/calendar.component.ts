@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 
 import * as MeetingActions from '../store/actions/meeting.action';
-import { Meeting } from '../../shared/interfaces/meeting.interface';
 import { MeetingService } from './meeting.service';
 import { environment } from '../../../environments/environment';
 import { CalendarService } from './calendar.service';
@@ -12,7 +11,7 @@ import { CalendarReducer } from '../store/interfaces';
 import { User } from '../../shared/interfaces/user.interface';
 import { NotificationService } from '../../shared/directives/notification.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AddingMeetingDialog } from './adding-meeting-dialog';
+import { AddingMeetingDialog } from './adding-meeting-dialog/adding-meeting-dialog';
 
 @Component({
   selector: 'app-calendar',
@@ -24,6 +23,7 @@ export class CalendarComponent implements OnInit {
   COLORS = [environment.colors.lightOrange, environment.colors.lightBlue, environment.colors.lightGreen, environment.colors.green, environment.colors.lightRed];
   TIMES = [];
   week: Date[] = [];
+  countWeek = 0;
   usersColors = {};
   meetings: {[day: number]: {[time: string]: {color: string, text: string}}} = {};
   groupId: number;
@@ -45,6 +45,16 @@ export class CalendarComponent implements OnInit {
     this._generateWeek();
     this._getMeetings();
     this._getCurrentGroup();
+  }
+
+  nextWeek() {
+    this.countWeek += 1;
+    this._generateWeek();
+  }
+
+  previousWeek() {
+    this.countWeek -= 1;
+    this._generateWeek();
   }
 
   onSelectTime(day: Date, time: string) {
@@ -145,7 +155,7 @@ export class CalendarComponent implements OnInit {
       const dialogRef = this.dialog.open(AddingMeetingDialog, {
         data: {startDate, endDate}
       });
-  
+
       dialogRef.afterClosed().subscribe(meetingName => {
         this._meetingService.createMeeting({name: meetingName, startDate, endDate, groupId}).subscribe(res => {
           this.notificationService.notify$.next('Meeting created');
@@ -202,11 +212,10 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  /*
-    @param: nextWeek - tell which next weekend show, 0 means this week
-  */
- private _generateWeek(nextWeek: number = 0) {
-    const firstDayOfWeek = moment().add(nextWeek,'d').startOf('week').toDate();
+  private _generateWeek() {
+    console.log(this.countWeek);
+    this.week = [];
+    const firstDayOfWeek = moment().add(this.countWeek * 7,'d').startOf('week').toDate();
     for (let i = 0; i < 7; i++) {
       const nextDay = new Date(firstDayOfWeek);
       nextDay.setDate(firstDayOfWeek.getDate() + i)

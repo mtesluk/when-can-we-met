@@ -6,6 +6,11 @@
             <mat-button-toggle [value]="getCalendarModeType('ADDING')">Arrange new meeting</mat-button-toggle>
         </mat-button-toggle-group>
     </div>
+    <div class="calendar__changeWeeks">
+        <mat-icon class="calendar__arrow" *ngIf="countWeek > 0" (click)="previousWeek()">arrow_back_ios</mat-icon>
+        <span class="spacer"></span>
+        <mat-icon class="calendar__arrow" (click)="nextWeek()">arrow_forward_ios</mat-icon>
+    </div>
     <div class="calendar__week">
         <div *ngFor="let day of week" class="tale">
             <div class="day">{{DAYS[day.getDay()]}}</div>
