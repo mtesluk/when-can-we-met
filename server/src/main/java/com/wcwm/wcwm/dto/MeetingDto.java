@@ -1,6 +1,5 @@
 package com.wcwm.wcwm.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
@@ -18,7 +17,6 @@ public class MeetingDto {
     private Date startDate;
     private Date endDate;
 
-    @NotNull(message = "Meeting must have user")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UserDto user;
 

@@ -1,6 +1,7 @@
 package com.wcwm.wcwm.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wcwm.wcwm.annotation.MeetingTimeConstraint;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -10,6 +11,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="meetings")
+@MeetingTimeConstraint
 public class Meeting {
 
     @GeneratedValue
