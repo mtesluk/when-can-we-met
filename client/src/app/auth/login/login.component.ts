@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this._store.dispatch({type: AuthActions.LOGIN, credentials: this.loginForm.value});
+      this._store.dispatch(AuthActions.login({credentials: this.loginForm.value}));
     }
   }
 

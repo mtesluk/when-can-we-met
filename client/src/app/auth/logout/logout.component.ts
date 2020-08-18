@@ -11,17 +11,15 @@ import { NotificationService } from '../../shared/directives/notification.servic
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private _store: Store<{auth: AuthReducer}>,
-              private notificationService: NotificationService,
+  constructor(
+              private _store: Store<{auth: AuthReducer}>,
             ) { }
 
   ngOnInit(): void {
   }
 
   logout() {
-    this._store.dispatch(AuthActions.resetToken());
-    localStorage.removeItem('token');
-    this.notificationService.notify$.next('Logout succesfully');
+    this._store.dispatch(AuthActions.logout());
   }
 
 }

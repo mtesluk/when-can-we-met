@@ -21,10 +21,8 @@ export class AuthErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((err: any) => {
-        console.log(err)
         if(err instanceof HttpErrorResponse && err.status == 401) {
-            this._store.dispatch(AuthActions.resetToken());
-            localStorage.removeItem('token');
+            this._store.dispatch(AuthActions.logout());
         }
         return throwError(err);
       }));

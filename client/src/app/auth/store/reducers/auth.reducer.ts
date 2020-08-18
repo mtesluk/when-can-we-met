@@ -9,7 +9,6 @@ export const initialState: AuthReducer = {
 
 const _authReducer = createReducer(initialState,
   on(AuthActions.setToken, (state, {token}) => ({...state, token: token})),
-  on(AuthActions.resetToken, state => ({...state, token: ''})),
 );
 
 export function authReducer(state, action) {

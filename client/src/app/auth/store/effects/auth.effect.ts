@@ -20,6 +20,17 @@ export class AuthEffects {
     )
   );
 
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthAction.logout),
+      map(() => {
+        localStorage.removeItem('token');
+        this.notificationService.notify$.next('Logout succesfully');
+        return AuthAction.setToken({token: ''});
+      })
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private authService: AuthService,
