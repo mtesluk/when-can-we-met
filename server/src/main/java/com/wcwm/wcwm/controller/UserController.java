@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -21,7 +23,9 @@ public class UserController {
     @PostMapping("${url.users}")
     public ResponseEntity registerUser(@RequestBody @Valid UserDto user) throws Exception {
         userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(String.format("User %s created", user.getUsername()));
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", String.format("User %s created", user.getUsername()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
     }
 
     @GetMapping("${url.users}")
