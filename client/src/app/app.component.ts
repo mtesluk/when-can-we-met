@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     const token = localStorage.getItem('token');
     if (token) {
-      // this._store.dispatch({type: AuthActions.SET_TOKEN, token});
+      this._store.dispatch({type: AuthActions.SET_TOKEN, token});
     }
 
     this._notificationService.notify$.subscribe((text: string) => {
