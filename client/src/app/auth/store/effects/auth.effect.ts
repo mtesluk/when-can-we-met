@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { map, exhaustMap } from 'rxjs/operators';
+import { map, exhaustMap, mergeMap, tap, switchMap } from 'rxjs/operators';
 import * as AuthAction from '../actions/auth.action';
 import { AuthService } from '../../auth.service';
 import { NotificationService } from '../../../shared/directives/notification.service';
@@ -13,9 +13,14 @@ export class AuthEffects {
       ofType(AuthAction.login),
       exhaustMap(action => this.authService.login(action.credentials)),
       map((response: {token: string}) => {
+        if (response?.token) {
           localStorage.setItem('token', response.token);
           this.notificationService.notify$.next('Sign in succesfull');
           return AuthAction.setToken(response);
+        } else {
+          this.notificationService.notify$.next('Sign in failed');
+          return AuthAction.setToken(null);
+        }
       }),
     )
   );

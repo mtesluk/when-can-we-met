@@ -159,7 +159,7 @@ export class CalendarComponent implements OnInit {
       dialogRef.afterClosed().subscribe(meetingName => {
         this._meetingService.createMeeting({name: meetingName, startDate, endDate, groupId}).subscribe(res => {
           this.notificationService.notify$.next('Meeting created');
-          this._store.dispatch(MeetingActions.getMeetings({groupId}));
+          // this._store.dispatch(MeetingActions.getMeetings({groupId}));
           this.setShowingMode();
         });
       });
@@ -213,7 +213,6 @@ export class CalendarComponent implements OnInit {
   }
 
   private _generateWeek() {
-    console.log(this.countWeek);
     this.week = [];
     const firstDayOfWeek = moment().add(this.countWeek * 7,'d').startOf('week').toDate();
     for (let i = 0; i < 7; i++) {

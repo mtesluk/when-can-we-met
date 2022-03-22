@@ -24,7 +24,6 @@ export class GroupEffects {
   //     ofType(GroupAction.setGroup),
   //     // mergeMap(() => this.groupsService.getGroups()),
   //     map(action => {
-  //       console.log(action)
   //         return GroupAction.setGroup({group: action.group});
   //     }),
   //   )
