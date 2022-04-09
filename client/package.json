@@ -24,7 +24,7 @@
     "@ngrx/effects": "^10.0.5",
     "@ngrx/store": "^10.0.5",
     "@ngrx/store-devtools": "^10.0.5",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
