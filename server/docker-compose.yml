@@ -5,7 +5,7 @@ services:
     ports:
       - 8080:8080
     environment:
-      - JAVA_OPTS=-Xmx384m -Xms384m -Xss650k -XX:+UseCompressedOops
+      - ENCRYPTION_KEY=hehe123
       - PORT=8080
       - WCWM_CORS=*
       - WCWM_DB_PASSWORD=root
