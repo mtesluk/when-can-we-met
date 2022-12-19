@@ -1,3 +1,7 @@
+## Server
+JAVA 1.8
+MAVEN 3.8.5
+
 For normal development set env for example
 ```
 export WCWM_DB=jdbc:postgresql://127.0.0.1:5432/wcwm
