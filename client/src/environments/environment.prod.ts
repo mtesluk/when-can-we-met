@@ -4,10 +4,10 @@ const prefix = 'wcwm';
 export const environment = {
   production: true,
   url: {
-    login: server + prefix + '/login',
-    group: server + prefix + '/groups',
-    user: server + prefix + '/users',
-    meeting: server + prefix + '/meetings',
+    login: `${server}/${prefix}/login`,
+    group: `${server}/${prefix}/groups`,
+    user: `${server}/${prefix}/users`,
+    meeting: `${server}/${prefix}/meetings`,
     addUser: (id) => `${server}/${prefix}/groups/${id}/add_user`,
   },
   colors: {
