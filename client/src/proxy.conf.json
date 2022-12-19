@@ -1,6 +1,6 @@
 {
     "/": {
-      "target": "139.162.135.51/wcwm",
+      "target": "139.162.135.51",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"
