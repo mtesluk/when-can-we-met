@@ -9,7 +9,7 @@ services:
       - PORT=8080
       - WCWM_CORS=*
       - WCWM_DB_PASSWORD=root
-      - WCWM_DB_USERNAME=mtesluk
+      - WCWM_DB_USERNAME=postgres
       - WCWM_DB_URI=jdbc:postgresql://wcwm_db:5432/wcwm
     depends_on:
       - wcwm_db
@@ -18,6 +18,5 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USERNAME=mtesluk
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=wcwm
