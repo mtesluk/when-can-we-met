@@ -1,13 +1,14 @@
-const server = 'https://wcwm.herokuapp.com';
+const server = '139.162.135.51';
+const prefix = 'wcwm';
 
 export const environment = {
   production: true,
   url: {
-    login: server + '/login',
-    group: server + '/groups',
-    user: server + '/users',
-    meeting: server + '/meetings',
-    addUser: (id) => `${server}/groups/${id}/add_user`,
+    login: server + prefix + '/login',
+    group: server + prefix + '/groups',
+    user: server + prefix + '/users',
+    meeting: server + prefix + '/meetings',
+    addUser: (id) => `${server}/${prefix}/groups/${id}/add_user`,
   },
   colors: {
     lightOrange: '#f5dcc0',
