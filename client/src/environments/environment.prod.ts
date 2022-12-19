@@ -1,4 +1,4 @@
-const server = '139.162.135.51';
+const server = 'http://139.162.135.51';
 const prefix = 'wcwm';
 
 export const environment = {
