@@ -1,14 +1,14 @@
 version: '3'
 services:
-  app:
+  wcwm_app:
     build: .
     ports:
       - 8080:8080
     environment:
-      - WCWM_DB=jdbc:postgresql://db:5432/wcwm
+      - WCWM_DB=jdbc:postgresql://wcwm_db:5432/wcwm
     depends_on:
-      - db
-  db:
+      - wcwm_db
+  wcwm_db:
     image: postgres:10
     ports:
       - 5432:5432
