@@ -1,6 +1,6 @@
 {
     "/": {
-      "target": "https://wcwm.herokuapp.com",
+      "target": "139.162.135.51/wcwm",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"
