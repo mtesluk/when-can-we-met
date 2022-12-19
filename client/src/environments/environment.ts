@@ -1,15 +1,16 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+const prefix = 'wcwm';
 
 export const environment = {
   production: false,
   url: {
-    login: '/login',
-    group: '/groups',
-    user: '/users',
-    meeting: '/meetings',
-    addUser: (id) => `/groups/${id}/add_user`,
+    login: prefix + '/login',
+    group: prefix + '/groups',
+    user: prefix + '/users',
+    meeting: prefix + '/meetings',
+    addUser: (id) => `/${prefix}/groups/${id}/add_user`,
   },
   colors: {
     lightOrange: '#f5dcc0',
